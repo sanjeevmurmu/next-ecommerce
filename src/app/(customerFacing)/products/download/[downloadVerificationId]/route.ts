@@ -10,11 +10,13 @@ export async function GET(req:NextRequest,{params:{downloadVerificationId}}:{par
         select:{product:{select:{filePath:true,name:true}}}
      })
 
+     console.log(data)
+
      if(data==null){
         return NextResponse.redirect(new URL("/products/download/expired",req.url))
      }
 
-     const{size}=await fs.stat(data.product.filePath)
+    const{size}=await fs.stat(data.product.filePath)
     const file=await fs.readFile(data.product.filePath)
     const extension=data.product.filePath.split(".").pop()
 

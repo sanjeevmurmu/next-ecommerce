@@ -1,38 +1,27 @@
-import { Button } from "@/components/ui/button";
-import { PageHeader } from "../_components/PageHeader";
 import Link from "next/link";
-import db from "@/db/db";
-import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
+import { PageHeader } from "../_components/PageHeader";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatCurrency, formatNumber } from "@/lib/formatter";
-import { ActiveToggleDropdownItem, DeleteDropdownItem } from "./_components/ProductActions";
-import {  DropdownMenu,DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger ,DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-export default function AdminProductsPage(){
+import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
+export default function DiscountCodesPage(){
     return <>
     <div className="flex justify-between items-center gap-4">
-    <PageHeader>Products</PageHeader>
-    <Button asChild><Link href="/admin/products/new">Add Product</Link></Button>
+    <PageHeader>Coupons</PageHeader>
+    <Button asChild><Link href="/admin/products/new">Add Coupons</Link></Button>
     </div>
-    <ProductsTable/>
+    <DiscountCodesTable/>
+    <div className="mt-8">
+        <h1 className="text-xl font-bold">Actions</h1>
+        <DiscountCodesTable/>
+    </div>
     </>
 }
 
-async function ProductsTable(){
-    const products=await db.product.findMany({
-        select:{
-            id:true,
-            name:true,
-            priceInCents:true,
-            isAvailableForPurchase:true,
-            _count:{select:{orders:true}}
-        },
-        orderBy:{name:"asc"}
-    })
-
-    if(products.length===0) return <p>No products found</p>
-
-
-    return <Table>
+function DiscountCodesTable(){
+    return(
+        <Table>
        <TableHeader>
             <TableRow>
                 <TableHead className="w-0">
@@ -75,8 +64,8 @@ async function ProductsTable(){
                                 <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator/>
-                            <ActiveToggleDropdownItem id={product.id} isAvailableForPurchase={product.isAvailableForPurchase}/>
-                            <DeleteDropdownItem id={product.id} disabled={product._count.orders>0 }/>
+                            {/* <ActiveToggleDropdownItem id={product.id} isAvailableForPurchase={product.isAvailableForPurchase}/> */}
+                            {/* <DeleteDropdownItem id={product.id} disabled={product._count.orders>0 }/> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                     </TableCell>
@@ -84,4 +73,5 @@ async function ProductsTable(){
             ))}
         </TableBody>
     </Table>
+    )
 }

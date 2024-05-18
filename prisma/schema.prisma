@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product{
@@ -22,6 +23,7 @@ model Product{
   updatedAt DateTime @updatedAt
   orders Order[]
   downloadVerification DownloadVerification[]
+  discountCodes DiscountCode[]
 }
 
 model User{
@@ -38,11 +40,15 @@ model Order{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+
   userId String
   productId String
 
   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
   product Product @relation(fields: [productId],references: [id],onDelete: Restrict)
+
+  discountCodeId String 
+  discountCode DiscountCode @relation(fields: [discountCodeId],references: [id],onDelete: Restrict)
 }
 
 model DownloadVerification{
@@ -53,4 +59,24 @@ model DownloadVerification{
 
   product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
 
+}
+
+model DiscountCode{
+  id String @id @default(uuid())
+  code String @unique
+  discountAmount Int
+  discountType DiscountCodeType
+  isActive Boolean @default(true)
+  allProducts Boolean @default(true)
+  createdAt DateTime @default(now())
+  limit Int?
+  expiresAt DateTime?
+
+  products Product[]
+  orders Order[]
+}
+
+enum DiscountCodeType{
+  PERCENTAGE
+  FIXED
 }

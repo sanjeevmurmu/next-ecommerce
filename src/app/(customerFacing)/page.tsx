@@ -8,13 +8,14 @@ import Link from "next/link"
 import { Suspense } from "react"
 
 
-// function wait(duration:number){
-//     console.log("working")
-//     return new Promise(resolve=>setTimeout(resolve,duration))
-// }
+function wait(duration:number){
+    console.log("working")
+    return new Promise(resolve=>setTimeout(resolve,duration))
+}
 
 
-const getNewestProducts=cache(()=>{
+const getNewestProducts=cache(async()=>{
+    // await wait(3000)
     return db.product.findMany({
         where:{isAvailableForPurchase:true},
         orderBy:{createdAt:"desc"},
@@ -22,8 +23,9 @@ const getNewestProducts=cache(()=>{
     })
 },["/","getNewestProducts"],{revalidate:60*60*24})
 
-const getMostPopularProducts=cache(()=>
+const getMostPopularProducts=cache(async()=>
 {
+    // await wait(3000)
     return db.product.findMany({
         where:{isAvailableForPurchase:true},
         orderBy:{orders:{_count:"desc"}},

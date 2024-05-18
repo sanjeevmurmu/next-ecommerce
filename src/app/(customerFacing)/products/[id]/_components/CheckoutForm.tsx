@@ -24,11 +24,13 @@ export function CheckoutForm({ product, clientSecret }: CheckoutFormProps) {
                 <div className="aspect-video flex-shrink-0 w-1/3 relative">
                     <Image src={product.imagePath} fill alt="product" />
                 </div>
+                <div>
                 <div className="text-lg">
                     {formatCurrency(product.priceInCents / 100)}
                 </div>
                 <h1 className="text-2xl font-bold">{product.name}</h1>
                 <div className="line-clamp-3 text-muted-foreground">{product.description}</div>
+                </div>
             </div>
             <Elements options={{ clientSecret }} stripe={stripePromise}>
                 <Form priceInCents={product.priceInCents} productId={product.id} />
