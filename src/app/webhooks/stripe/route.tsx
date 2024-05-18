@@ -11,7 +11,7 @@ export async function POST(req:NextRequest) {
     const event=stripe.webhooks.constructEvent(await req.text(),req.headers.get("stripe-signature") as string,
     process.env.STRIPE_WEBHOOK_SECRET as string
 )
-    console.log(event.data)
+    // console.log(event.data)
     if(event.type==="charge.succeeded"){
         const charge=event.data.object
         const productId=charge.metadata.productId

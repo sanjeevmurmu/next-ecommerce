@@ -18,7 +18,7 @@ const addSchema=z.object({
 })
 export async function addProduct(prevState:unknown,formData:FormData){
     const result=addSchema.safeParse(Object.fromEntries(formData.entries()))
-    console.log(formData)
+    // console.log(formData)
     if (result.success===false){
         return result.error.formErrors.fieldErrors
     }
@@ -56,7 +56,7 @@ const editSchema=addSchema.extend({
 
 export async function updateProduct(id:string,prevState:unknown,formData:FormData){
     const result=editSchema.safeParse(Object.fromEntries(formData.entries()))
-    console.log(formData)
+    // console.log(formData)
     if (result.success===false){
         return result.error.formErrors.fieldErrors
     }
