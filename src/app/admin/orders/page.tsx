@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "../_components/PageHeader";
 import Link from "next/link";
 import db from "@/db/db";
-import {MoreVertical} from "lucide-react";
+import {Minus, MoreVertical} from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency, formatNumber } from "@/lib/formatter";
 import {DeleteDropdownItem } from "./_components/orderActions";
@@ -14,7 +14,8 @@ async function getorders(){
             id:true,
             pricePaidInCents:true,
             product:{select:{name:true}},
-            user:{select:{email:true}}
+            user:{select:{email:true}},
+            discountCode:{select:{code:true}}
         },
         orderBy:{createdAt:"desc"}
     })
@@ -44,6 +45,7 @@ async function OrdersTable(){
                 <TableHead>Product</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead>Price Paid</TableHead>
+                <TableHead>Coupon</TableHead>
                 <TableHead className="w-0">
                      <span className="sr-only">Actions</span>
                 </TableHead>            
@@ -56,6 +58,7 @@ async function OrdersTable(){
                     <TableCell>{order.product.name}</TableCell>
                     <TableCell>{order.user.email}</TableCell>
                     <TableCell>{formatCurrency(order.pricePaidInCents/100)}</TableCell>
+                    <TableCell>{order.discountCode==null ?<Minus/>:order.discountCode.code}</TableCell>
                     <TableCell className="text-center">
                         <DropdownMenu>
                         <DropdownMenuTrigger>

@@ -30,9 +30,9 @@ export default async function SuccessPage({searchParams}:{searchParams:{payment_
             <Image src={product.imagePath} fill alt="product" />
         </div>
         <div>
-        <div className="text-lg">
-            {formatCurrency(product.priceInCents / 100)}
-         </div>
+        {/* <div className="text-lg">
+            {formatCurrency(paymentIntent.amount/ 100)}
+         </div> */}
         <h1 className="text-2xl font-bold">{product.name}</h1>
         <div className="line-clamp-3 text-muted-foreground">{product.description}</div>
         </div>
