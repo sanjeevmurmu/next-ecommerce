@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle2, Globe, Infinity, Minus, MoreVertical, XCircle } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { formatCurrency, formatDateTime, formatDiscountCode, formatNumber } from "@/lib/formatter";
+import {formatDateTime, formatDiscountCode, formatNumber } from "@/lib/formatter";
 import db from "@/db/db"
 import { Prisma } from "@prisma/client";
 import { DeleteDropdownItem,ActiveToggleDropdownItem } from "./_components/DiscountCodeActions";
@@ -101,7 +101,6 @@ function DiscountCodesTable({discountCodes,isInactive=false,canDeactivate=false}
                     <TableCell>{formatDiscountCode(discountCode)}</TableCell>
                     <TableCell>
                         {discountCode.expiresAt==null?(<Minus/>):(formatDateTime(discountCode.expiresAt))}</TableCell>
-                    <TableCell>
                         <TableCell>
                         {discountCode.limit==null?(<Infinity/>):(formatNumber(discountCode.limit-discountCode.uses))}
                         </TableCell>
@@ -113,6 +112,7 @@ function DiscountCodesTable({discountCodes,isInactive=false,canDeactivate=false}
                             discountCode.products.map((product)=>product.name).join(',')
                             )}
                         </TableCell>
+                        <TableCell>
                         <DropdownMenu>
                         <DropdownMenuTrigger>
                         <MoreVertical/>
@@ -125,8 +125,8 @@ function DiscountCodesTable({discountCodes,isInactive=false,canDeactivate=false}
                                 <DropdownMenuSeparator/>
                                 </>
                             )}
-                        </DropdownMenuContent>
                             <DeleteDropdownItem id={discountCode.id} disabled={discountCode._count.orders>0 }/>
+                        </DropdownMenuContent>
                     </DropdownMenu>
                     </TableCell>
                 </TableRow>

@@ -30,6 +30,8 @@ export function CheckoutForm({ product,discountCode}: CheckoutFormProps) {
                 <div className="aspect-video flex-shrink-0 w-1/3 relative">
                     <Image src={product.imagePath} fill alt="product" />
                 </div>
+                <div>
+
                 <div className="text-lg flex gap-4 items-baseline">
                 <div className={isDiscounted?"line-through text-muted-foreground text-sm":""}>
                     {formatCurrency(product.priceInCents/ 100)}
@@ -41,10 +43,9 @@ export function CheckoutForm({ product,discountCode}: CheckoutFormProps) {
                 }
                 </div>
                 <div>
-               
-               
                 <h1 className="text-2xl font-bold">{product.name}</h1>
                 <div className="line-clamp-3 text-muted-foreground">{product.description}</div>
+                </div>
                 </div>
             </div>
             <Elements options={{ amount,mode:"payment",currency:"inr" }} stripe={stripePromise}>
